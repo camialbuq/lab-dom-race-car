@@ -72,9 +72,14 @@ class Game {
       const obstacle = this.obstacles[i];
       obstacle.move(); //move the obstacle as we defined speed in obstacle.js
       //adding more obstacles if the first obstacle passes half of the screen
-      if (obstacle.top > this.height / 2 && this.obstacles.length < 2) {
+      if (
+        obstacle.top > this.height / 2 &&
+        this.obstacles.length < 2 &&
+        this.lives > 0 //added so that we only generate new obstacle when game running
+      ) {
         this.obstacles.push(new Obstacle(this.gameScreen));
       }
+
       // If the player's car collides with an obstacle
       if (this.player.didCollide(obstacle)) {
         //didCollide described in player
@@ -84,6 +89,8 @@ class Game {
         this.obstacles.splice(i, 1);
         // Reduce player's lives by 1
         this.lives--;
+        const livesUpdate = document.getElementById("lives");
+        livesUpdate.textContent = this.lives;
         // Update the counter variable to account for the removed obstacle
         i--;
       } // If the obstacle is off the screen (at the bottom)
@@ -91,6 +98,9 @@ class Game {
         //everytime we move we are changing the obstacle top
         // Increase the score by 1
         this.score++;
+        const scoreUpdate = document.getElementById("score");
+        scoreUpdate.textContent = this.score;
+
         // Remove the obstacle from the DOM
         obstacle.element.remove();
         // Remove obstacle object from the array
@@ -99,6 +109,8 @@ class Game {
         i--;
       }
     }
+    //ask omar after we added one more obstacle,
+    // the obstacles dont finish and score keeps counting up after end game
 
     // If the lives are 0, end the game
     if (this.lives === 0) {
