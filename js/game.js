@@ -54,10 +54,11 @@ class Game {
   //runs the game loop
   gameLoop() {
     //console.log("in the game loop"); //dont forget to console.log to check if working
-    this.update();
     if (this.gameIsOver) {
       //it interrupts the game interval by calling clearInterval while passing the gameIntervalId as an argument.
       clearInterval(this.gameIntervalId);
+    } else {
+      this.update(); //update only when gameOver is false
     }
   } //end of gameLoop method
 
@@ -113,6 +114,7 @@ class Game {
     // the obstacles dont finish and score keeps counting up after end game
 
     // If the lives are 0, end the game
+    console.log(this.lives, "lives");
     if (this.lives === 0) {
       this.endGame();
     }
@@ -125,6 +127,7 @@ class Game {
   }
 
   endGame() {
+    console.log("endGame was called");
     this.player.element.remove();
     this.obstacles.forEach((obstacle) => obstacle.element.remove());
     this.gameIsOver = true;
